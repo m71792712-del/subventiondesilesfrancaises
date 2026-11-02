@@ -1,5 +1,5 @@
 {
-  "name" "subvention-des-iles-francaises-admin",
+  "name": "subvention-des-iles-francaises-admin",
   "version": "1.0.0",
   "private": true,
   "description": "Interface d'administration (compte admin unique) — projet universitaire, données fictives uniquement",
