@@ -7,8 +7,8 @@
 ## 1. Architecture
 
 ```
- Navigateur ──► Frontend (https://creditdesilesfrancaises.vercel.app)      ─┐
- Navigateur ──► Admin    (https://creditdesilesfrancaisesadmin.vercel.app) ─┼─► Supabase : Auth + PostgREST (tables protégées par RLS + fonctions RPC)
+ Navigateur ──► Frontend (https://subventiondesilesfrancaises.vercel.app)      ─┐
+ Navigateur ──► Admin    (https://subventiondesilesfrancaisesadmin.vercel.app) ─┼─► Supabase : Auth + PostgREST (tables protégées par RLS + fonctions RPC)
 ```
 
 - Les deux applications utilisent **uniquement** l'URL du projet et la clé **anon/publishable**. Aucune clé `service_role`.
