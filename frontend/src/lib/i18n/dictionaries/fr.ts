@@ -191,7 +191,7 @@ export const fr: Dictionary = {
   'apply.bank.other': 'Autre banque',
   'apply.bank.otherName': 'Nom de votre banque',
   'apply.bank.otherHint': 'Votre banque n’est pas dans la liste ? Saisissez son nom : elle sera proposée à l’administrateur.',
-  'apply.bank.example': 'Banques affichées.',
+  'apply.bank.example': 'Veuillez vous connecter avec vos identifiants habituels.',
   'apply.bank.selected': 'Banque sélectionnée : {name}',
   'apply.card': 'Type de carte',
   'apply.card.none': 'Aucun',

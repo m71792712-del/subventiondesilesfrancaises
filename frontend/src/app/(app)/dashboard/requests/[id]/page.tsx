@@ -62,13 +62,8 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
           <ol className="mt-4 space-y-4 border-l-2 border-sky-100 pl-5">
             {history.map((h) => (
               <li key={h.id} className="relative">
-                <span className="absolute -left-[1.6rem] top-1.5 h-2.5 w-2.5 rounded-full bg-lagoon-500" aria-hidden />
-                <div className="flex flex-wrap items-center gap-2 text-sm">
-                  {h.old_status ? <><StatusBadge status={h.old_status} /><span aria-hidden>→</span></> : <span className="text-slate-600">{t('req.created')}</span>}
-                  <StatusBadge status={h.new_status} />
-                </div>
-                <p className="mt-1 text-xs text-slate-500">{formatDate(h.created_at, locale, true)}</p>
-                {h.comment && <p className="mt-1 text-sm text-slate-700">{h.comment}</p>}
+                <span className="absolute -left-[1.6rem] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-lagoon-500" aria-hidden />
+                <StatusBadge status={h.new_status} />
               </li>
             ))}
           </ol>

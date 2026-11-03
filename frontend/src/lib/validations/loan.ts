@@ -40,8 +40,6 @@ export function makeLoanBaseSchema(limits: Limits) {
     amount: z.coerce
       .number({ invalid_type_error: 'v.amount.invalid' })
       .positive('v.amount.invalid')
-      .min(limits.min, 'v.amount.range')
-      .max(limits.max, 'v.amount.range'),
     currency: z.enum(CURRENCIES, { errorMap: () => ({ message: 'v.currency' }) }),
     description: z.string().trim().min(20, 'v.description').max(2000, 'v.description'),
     purposeCode: z.string().trim().min(1, 'v.purpose').max(40, 'v.purpose'),

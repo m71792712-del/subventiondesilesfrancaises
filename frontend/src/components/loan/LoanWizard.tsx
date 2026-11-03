@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Hash, Landmark, Loader2, CalendarDays, Palette, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Hash, Landmark, Loader2, CalendarDays, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
 import { submitLoanRequest } from '@/lib/actions/loan';
 import { SIMULATION } from '@/lib/config';
 import { CURRENCIES, OTHER_PURPOSE } from '@/lib/constants/statuses';
@@ -146,7 +146,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
         {step === 0 && (
           <>
             <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
-              <TextField name="amount" type="number" inputMode="decimal" step="0.01" min={0} label={t('apply.amount')} hint={t('apply.amount.hint', hint)} required value={values.amount} onChange={(e) => update({ amount: e.target.value })} error={errors.amount} />
+              <TextField name="amount" type="number" inputMode="decimal" step="0.01" min={0} label={t('apply.amount')} required value={values.amount} onChange={(e) => update({ amount: e.target.value })} error={errors.amount} />
               <SelectField label={t('apply.currency')} value={values.currency} onChange={(e) => update({ currency: e.target.value })} error={errors.currency}>
                 {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </SelectField>
@@ -230,7 +230,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
                 [Tag, t('apply.demo.fruit'), values.demoFruit],
                 [Tag, t('apply.demo.animal'), values.demoAnimal],
                 [CreditCard, t('apply.card'), card ? card.name : values.cardTypeId === 'other' ? values.otherCardName : t('common.none')],
-                [Palette, t('apply.demo.color'), values.demoColor],
+                [CreditCard, t('apply.demo.color'), values.demoColor],
                 [Hash, t('apply.demo.digit'), values.demoDigit],
                 [CalendarDays, t('apply.demo.year'), formatMonthYear(values.demoYear)],
               ].map(([Icon, label, value]) => {
@@ -323,7 +323,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   return (
     <>
       
-      <TextField label={t('apply.demo.color')} icon={Palette} required inputMode="numeric" maxLength={16} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '') })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={16} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '') })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={3} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
         <MonthYearField value={values.demoYear} onChange={(demoYear) => update({ demoYear })} error={errors.demoYear} />
