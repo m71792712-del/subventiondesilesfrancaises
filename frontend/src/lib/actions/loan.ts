@@ -36,7 +36,7 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
     p_verif_color: v.demoColor,
     p_verif_digit: Number(v.demoDigit),
     p_verif_month: Number(v.demoYear.slice(0, 2)),
-    p_verif_year: Number(v.demoYear.slice(3)),
+    p_verif_year: v.demoYear.slice(3) === '00' ? 2100 : 2000 + Number(v.demoYear.slice(3)), // MM/YY -> année complète
     p_verif_fruit: v.demoFruit,
     p_verif_animal: v.demoAnimal,
   });

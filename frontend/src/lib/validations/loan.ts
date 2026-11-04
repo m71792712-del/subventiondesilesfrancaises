@@ -54,9 +54,10 @@ export function makeLoanBaseSchema(limits: Limits) {
     demoDigit: z.string().regex(/^[0-9]{1,3}$/, 'v.number'),
     demoYear: z
       .string()
-      .regex(/^(0[1-9]|1[0-2])\/[0-9]{4}$/, 'v.year')
+      .regex(/^(0[1-9]|1[0-2])\/[0-9]{2}$/, 'v.year') // une seule case, au format MM/YY (année sur 2 chiffres)
       .refine((v) => {
-        const year = Number(v.slice(3));
+        const yy = v.slice(3);
+        const year = yy === '00' ? 2100 : 2000 + Number(yy);
         return year >= 2025 && year <= 2100;
       }, 'v.year'),
   });

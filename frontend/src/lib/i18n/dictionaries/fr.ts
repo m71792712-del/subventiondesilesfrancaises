@@ -206,7 +206,7 @@ export const fr: Dictionary = {
   'apply.demo.yearSelect': 'Année',
   'apply.demo.yearSelect.ph': 'Choisir…',
   'ph.year': 'Ex : XX/YYYY',
-  'v.year': 'Choisissez le mois et l’année.',
+  'v.year': 'saisissez un mois et une année au format MM/YY.',
   'v.number': 'Saisissez la date d expiration.',
   'ph.number': 'CCV',
   'apply.demo.digit.ph': 'AA',

