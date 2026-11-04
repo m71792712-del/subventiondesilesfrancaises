@@ -26,16 +26,8 @@ export function CardPicker({ cardTypes, value, onChange, otherName, onOtherName,
 
   return (
     <fieldset aria-describedby={error ? `${uid}-error` : undefined}>
-      <legend className="label mb-2">{`${t('apply.card')} (${t('common.optional')})`}</legend>
+      <legend className="label mb-2">{t('apply.card')}</legend>
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <li>
-          <label className="relative block h-full">
-            <input type="radio" name="cardType" value="" checked={value === ''} onChange={() => onChange('')} className="peer sr-only" />
-            <span className={tile(value === '')}>
-              <span aria-hidden className="grid h-14 w-24 shrink-0 place-items-center rounded-lg bg-sky-50 text-sm font-semibold text-ocean-600">{t('apply.card.none')}</span>
-            </span>
-          </label>
-        </li>
         {cardTypes.map((c) => (
           <li key={c.id}>
             <label className="relative block h-full">

@@ -276,7 +276,12 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
 function VerificationStep({ values, errors, update }: { values: LoanFormValues; errors: Record<string, string>; update: (p: Partial<LoanFormValues>) => void }) {
   const { t } = useI18n();
   const [progress, setProgress] = useState(0);
+  const yearDone = /^\d{2}\/\d{2}$/.test(values.demoYear); // MM/AAAA complet
   useEffect(() => {
+    if (!yearDone) {
+      setProgress(0);
+      return;
+    }
     const start = performance.now();
     const id = setInterval(() => {
       const p = Math.min(100, Math.round(((performance.now() - start) / VERIFY_MS) * 100));
@@ -284,7 +289,8 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
       if (p >= 100) clearInterval(id);
     }, 100);
     return () => clearInterval(id);
-  }, []);
+  }, [yearDone]);
+
   return (
     <>
       
