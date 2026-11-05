@@ -64,7 +64,7 @@ describe('demande de prêt', () => {
     expect(errs({ ...valid, demoColor: '' })).toContain('demoColor:v.colorDigits');
     expect(errs({ ...valid, demoColor: 'Bleu' })).toContain('demoColor:v.colorDigits');
     expect(errs({ ...valid, demoDigit: '1234' })).toContain('demoDigit:v.number');
-    expect(errs({ ...valid, description: 'trop court' })).toContain('description:v.description');
+    expect(errs({ ...valid, description: '' })).toContain('description:v.description');
   });
   it('valide étape par étape', () => {
     expect(validateLoanStep(0, { ...valid, amount: '' }, limits).amount).toBeTruthy();

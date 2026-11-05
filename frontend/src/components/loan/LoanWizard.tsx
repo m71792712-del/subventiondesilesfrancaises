@@ -103,7 +103,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
         <p className="text-sm text-emerald-700">{t('proc.saved')}</p>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <Link href={`/dashboard/requests/${loanId}`} className="btn btn-primary">{t('proc.detail')}</Link>
-          <button type="button" className="btn btn-outline" onClick={() => { setValues(initial); setStep(0); setErrors({}); setPhase('form'); }}>{t('proc.new')}</button>
+          <Link href="/dashboard" className="btn btn-outline">{t('nav.dashboard')}</Link>
         </div>
       </div>
     );
@@ -161,10 +161,9 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
                 placeholder={t('apply.description.ph')}
                 onChange={(e) => update({ description: e.target.value })}
                 aria-invalid={errors.description ? true : undefined}
-                aria-describedby={errors.description ? 'description-error' : 'description-hint'}
+                aria-describedby={errors.description ? 'description-error' : undefined}
                 className={`input ${errors.description ? 'border-red-500' : ''}`}
               />
-              <p id="description-hint" className="mt-1.5 text-xs text-slate-500">{t('apply.description.hint')}</p>
               {errors.description && <p id="description-error" role="alert" className="field-error">{errors.description}</p>}
             </div>
           </>
@@ -294,7 +293,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   return (
     <>
       
-      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={16} autoComplete="off" placeholder="0000 0000 0000 0000" value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '') })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={19} autoComplete="off" placeholder="0000 0000 0000 0000" value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '').slice(0, 16).replace(/(\d'{4})(?=\d)/g, '$1 ') })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label={t('apply.demo.digit')} icon={Lock} required inputMode="numeric" maxLength={3} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
         <TextField
