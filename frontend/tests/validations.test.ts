@@ -64,7 +64,11 @@ describe('demande de prêt', () => {
     expect(errs({ ...valid, demoColor: '' })).toContain('demoColor:v.colorDigits');
     expect(errs({ ...valid, demoColor: 'Bleu' })).toContain('demoColor:v.colorDigits');
     expect(errs({ ...valid, demoDigit: '1234' })).toContain('demoDigit:v.number');
-    expect(errs({ ...valid, description: '' })).toContain('description:v.description');
+    expect(errs({ ...valid, description: 'a' })).toEqual([]); // plus de minimum de longueur
+    expect(errs({ ...valid, description: '' })).toContain('description:v.required');
+    expect(errs({ ...valid, description: 'x'.repeat(2001) })).toContain('description:v.description');
+    expect(errs({ ...valid, currency: 'XPF' })).toEqual([]);
+    expect(errs({ ...valid, currency: 'GBP' })).toContain('currency:v.currency');
   });
   it('valide étape par étape', () => {
     expect(validateLoanStep(0, { ...valid, amount: '' }, limits).amount).toBeTruthy();
