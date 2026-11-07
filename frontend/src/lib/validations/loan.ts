@@ -16,7 +16,7 @@ export interface LoanFormValues {
   purposeDetails: string;
   bankId: string; // uuid d'une banque, ou « other »
   otherBankName: string;
-  demoNumber: string; chiffres uniquement (19 max)
+  demoNumber: string; //chiffres uniquement (19 max)
   demoFruit: string;
   demoAnimal: string;
   cardTypeId: string; // uuid, « other », ou chaîne vide (aucune carte)
