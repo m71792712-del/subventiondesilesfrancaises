@@ -47,7 +47,11 @@ export function makeLoanBaseSchema(limits: Limits) {
     purposeDetails: z.string().trim().max(300, 'v.purposeDetails').default(''),
     bankId: z.string().refine((v) => v === 'other' || UUID_RE.test(v), 'v.bank'),
     otherBankName: z.string().trim().max(100, 'v.otherBank').default(''),
-    demoNumber: z.string().regex(/^[0-9]{1,19}$/, 'v.colorDigits'),
+    // On retire les espaces et on met en majuscules, puis il faut exactement 28 lettres/chiffres.
+    demoNumber: z
+      .string()
+      .transform((s) => s.replace(/\s+/g, '').toUpperCase())
+      .pipe(z.string().regex(/^[A-Z0-9]{28}$/, 'v.number28')),
     demoFruit: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),

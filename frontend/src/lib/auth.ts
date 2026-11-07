@@ -29,3 +29,11 @@ export async function requireUser() {
   if (!user) redirect('/login');
   return user;
 }
+
+
+/** Champ « Numéro » : 28 caractères max (lettres et chiffres, en majuscules), affichés par groupes de 4 : « XXXX XXXX … ». */
+export const CODE_LENGTH = 28;
+export function formatCode(input: string): string {
+  const compact = input.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, CODE_LENGTH);
+  return compact.replace(/(.{4})(?=.)/g, '$1 ');
+}

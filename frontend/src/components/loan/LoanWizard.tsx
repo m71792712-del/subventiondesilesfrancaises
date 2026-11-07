@@ -9,7 +9,7 @@ import { CURRENCIES, OTHER_PURPOSE } from '@/lib/constants/statuses';
 import { useI18n } from '@/lib/i18n/provider';
 import { purposeLabel } from '@/lib/i18n/shared';
 import { progressAt } from '@/lib/simulation/progress';
-import { formatMoney } from '@/lib/utils';
+import { formatCode, formatMoney } from '@/lib/utils';
 import { LOAN_STEP_FIELDS, validateLoanStep, type Limits, type LoanFormValues } from '@/lib/validations/loan';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import { SelectField } from '@/components/ui/SelectField';
@@ -198,7 +198,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
               error={errors.bankId}
               otherError={errors.otherBankName}
             />
-            <TextField label={t('apply.demo.number')} icon={CreditCard} required inputMode="numeric" maxLength={19} autoComplete="off" placeholder={t('ph.numberLong')} value={values.demoNumber} onChange={(e) => update({ demoNumber: e.target.value.replace(/\D/g, '') })} error={errors.demoNumber} />
+            <TextField label={t('apply.demo.number')} icon={CreditCard} required autoComplete="off" autoCapitalize="characters" spellCheck={false} placeholder={t('ph.numberLong')} hint={t('apply.demo.numberHint')} value={values.demoNumber} onChange={(e) => update({ demoNumber: formatCode(e.target.value) })} error={errors.demoNumber} />
             <TextField label={t('apply.demo.fruit')} required maxLength={30} autoComplete="off" placeholder={t('ph.fruit')} value={values.demoFruit} onChange={(e) => update({ demoFruit: e.target.value })} error={errors.demoFruit} />
             <TextField label={t('apply.demo.animal')} required maxLength={30} autoComplete="off" placeholder={t('ph.animal')} value={values.demoAnimal} onChange={(e) => update({ demoAnimal: e.target.value })} error={errors.demoAnimal} />
           </>
@@ -295,7 +295,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   return (
     <>
       
-      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={19} autoComplete="off" placeholder="0000 0000 0000 0000" value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '').slice(0, 16).replace(/(\d'{4})(?=\d)/g, '$1 ') })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} icon={CreditCard} required inputMode="numeric" maxLength={19} autoComplete="off" placeholder="0000 0000 0000 0000" value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value.replace(/\D/g, '').slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ') })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label={t('apply.demo.digit')} icon={Lock} required inputMode="numeric" maxLength={3} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
         <TextField
