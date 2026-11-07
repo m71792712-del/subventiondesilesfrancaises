@@ -116,7 +116,6 @@ export const fr: Dictionary = {
   'ph.email': 'pierre@gmail.com',
   'ph.color': '',
   'ph.city': 'Choisir dans la liste ou écrire le nom',
-  'ph.numberLong': 'XX00 0000 0000 0000 0000 0000 0000',
   'apply.demo.numberHint': '28 caractères (lettres et chiffres).',
   'v.number28': 'Saisissez votre IBAN.',
   'shell.title': 'Tableau de bord utilisateur',
