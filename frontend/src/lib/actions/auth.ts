@@ -51,7 +51,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     email: d.email,
     password: d.password,
     options: {
-      data: { first_name: d.firstName, last_name: d.lastName, phone: d.phone, demo_color: d.demoColor, demo_city: d.demoCity },
+
       emailRedirectTo: `${SITE_URL}/auth/callback?next=/dashboard`,
       captchaToken: captchaToken(formData),
     },
