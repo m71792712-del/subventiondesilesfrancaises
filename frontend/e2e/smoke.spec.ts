@@ -19,8 +19,8 @@ test('les pages privées redirigent vers la connexion', async ({ page }) => {
 test('inscription : validation des champs et mot de passe affichable', async ({ page }) => {
   await page.goto('/register');
   await expect(page.getByText('Projet universitaire')).toBeVisible();
-  await expect(page.getByLabel('Couleur préférée (fictif)')).toBeVisible();
-  await expect(page.getByLabel('Ville (fictif)')).toBeVisible();
+  await expect(page.getByLabel('Couleur préférée (fictif)')).toHaveCount(0);
+  await expect(page.getByLabel('Pays')).toBeVisible();
   const pwd = page.getByLabel('Mot de passe', { exact: true });
   await pwd.fill('abc');
   await page.getByRole('button', { name: 'Afficher le mot de passe' }).click();
