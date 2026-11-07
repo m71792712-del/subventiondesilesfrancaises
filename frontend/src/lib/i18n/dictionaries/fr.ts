@@ -116,7 +116,7 @@ export const fr: Dictionary = {
   'ph.email': 'pierre@gmail.com',
   'ph.color': '',
   'auth.country.ph': 'Choisir un pays',
-  'auth.country.other': 'Autre (écrire le nom)',
+  'auth.country.other': 'Autre',
   'auth.country.otherName': 'Nom du pays',
   'ph.city': 'Choisir dans la liste ou écrire le nom',
   'apply.demo.numberHint': '28 caractères (lettres et chiffres).',
