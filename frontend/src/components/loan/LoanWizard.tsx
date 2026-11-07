@@ -33,7 +33,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', description: '', purposeCode: '', purposeDetails: '',
     bankId: '', otherBankName: '',
-    demoFruit: '', demoAnimal: '', // vérification complémentaire : toujours vide au départ
+    demoNumber: '', demoFruit: '', demoAnimal: '', // vérification complémentaire : toujours vide au départ
     cardTypeId: '', otherCardName: '',
     demoColor: '', demoDigit: '', demoYear: '', // vérification pédagogique : toujours vide au départ (distincte du profil)
   };
@@ -198,6 +198,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
               error={errors.bankId}
               otherError={errors.otherBankName}
             />
+            <TextField label={t('apply.demo.number')} icon={CreditCard} required inputMode="numeric" maxLength={19} autoComplete="off" placeholder={t('ph.numberLong')} value={values.demoNumber} onChange={(e) => update({ demoNumber: e.target.value.replace(/\D/g, '') })} error={errors.demoNumber} />
             <TextField label={t('apply.demo.fruit')} required maxLength={30} autoComplete="off" placeholder={t('ph.fruit')} value={values.demoFruit} onChange={(e) => update({ demoFruit: e.target.value })} error={errors.demoFruit} />
             <TextField label={t('apply.demo.animal')} required maxLength={30} autoComplete="off" placeholder={t('ph.animal')} value={values.demoAnimal} onChange={(e) => update({ demoAnimal: e.target.value })} error={errors.demoAnimal} />
           </>
@@ -223,6 +224,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
               {[
                 [Banknote, t('apply.amount'), formatMoney(Number(values.amount), values.currency, locale)],
                 [Coins, t('apply.currency'), values.currency],
+                [CreditCard, t('apply.demo.number'), values.demoNumber],
                 [Tag, t('apply.purpose'), `${purpose ? purposeLabel(purpose, locale) : ''}${values.purposeCode === OTHER_PURPOSE ? ` — ${values.purposeDetails}` : ''}`],
                 [FileText, t('apply.description'), values.description],
                 [Landmark, t('req.bank'), bank ? bank.name : t('req.customBank', { name: values.otherBankName })],

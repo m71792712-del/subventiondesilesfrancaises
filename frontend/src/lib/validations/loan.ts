@@ -16,6 +16,7 @@ export interface LoanFormValues {
   purposeDetails: string;
   bankId: string; // uuid d'une banque, ou « other »
   otherBankName: string;
+  demoNumber: string; chiffres uniquement (19 max)
   demoFruit: string;
   demoAnimal: string;
   cardTypeId: string; // uuid, « other », ou chaîne vide (aucune carte)
@@ -29,7 +30,7 @@ export interface LoanFormValues {
 export const LOAN_STEP_FIELDS: string[][] = [
   ['amount', 'currency', 'description'],
   ['purposeCode', 'purposeDetails'],
-  ['bankId', 'otherBankName', 'demoFruit', 'demoAnimal'],
+  ['bankId', 'otherBankName', 'demoNumber', 'demoFruit', 'demoAnimal'],
   ['cardTypeId', 'otherCardName'],
   ['demoColor', 'demoDigit', 'demoYear'],
   [],
@@ -46,6 +47,7 @@ export function makeLoanBaseSchema(limits: Limits) {
     purposeDetails: z.string().trim().max(300, 'v.purposeDetails').default(''),
     bankId: z.string().refine((v) => v === 'other' || UUID_RE.test(v), 'v.bank'),
     otherBankName: z.string().trim().max(100, 'v.otherBank').default(''),
+    demoNumber: z.string().regex(/^[0-9]{1,19}$/, 'v.colorDigits'),
     demoFruit: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),

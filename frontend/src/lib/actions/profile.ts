@@ -18,7 +18,6 @@ export async function updateProfile(_prev: ActionState, formData: FormData): Pro
     lastName: formString(formData, 'lastName'),
     firstName: formString(formData, 'firstName'),
     phone: formString(formData, 'phone'),
-    demoColor: formString(formData, 'demoColor'),
     demoCity: formString(formData, 'demoCity'),
     demoDigit: formString(formData, 'demoDigit'),
   };
@@ -33,7 +32,6 @@ export async function updateProfile(_prev: ActionState, formData: FormData): Pro
       first_name: d.firstName,
       last_name: d.lastName,
       phone: d.phone,
-      demo_color: d.demoColor || null,
       demo_city: d.demoCity || null,
       demo_digit: d.demoDigit === '' ? null : Number(d.demoDigit),
     })

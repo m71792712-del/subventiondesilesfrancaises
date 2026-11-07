@@ -1,10 +1,9 @@
 'use client';
 
-import { useId } from 'react';
+import { SelectField } from '@/components/ui/SelectField';
 import { TextField } from '@/components/ui/TextField';
 import { useI18n } from '@/lib/i18n/provider';
 import type { CardType } from '@/types/db';
-import { CardLogo } from './CardLogo';
 
 interface Props {
   cardTypes: CardType[];
@@ -16,40 +15,17 @@ interface Props {
   otherError?: string;
 }
 
-/** Grille de types de carte, avec logo (facultatif : une tuile « Aucun » et une tuile « Autre carte » restent toujours disponibles). */
+/** Choix du type de carte : simple liste déroulante (facultatif : « Aucun » et « Autre carte » restent disponibles). */
 export function CardPicker({ cardTypes, value, onChange, otherName, onOtherName, error, otherError }: Props) {
   const { t } = useI18n();
-  const uid = useId();
-
-  const tile = (checked: boolean) =>
-    `flex h-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm transition peer-focus-visible:ring-2 peer-focus-visible:ring-ocean-500 ${checked ? 'border-lagoon-500 bg-lagoon-50 ring-1 ring-lagoon-500' : 'border-slate-200 bg-white hover:border-sky-300'}`;
 
   return (
-    <fieldset aria-describedby={error ? `${uid}-error` : undefined}>
-      <legend className="label mb-2">{t('apply.card')}</legend>
-      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {cardTypes.map((c) => (
-          <li key={c.id}>
-            <label className="relative block h-full">
-              <input type="radio" name="cardType" value={c.id} checked={value === c.id} onChange={() => onChange(c.id)} className="peer sr-only" />
-              <span className={tile(value === c.id)}>
-                <CardLogo name={c.name} />
-                <span className="font-medium text-navy-900">{c.name}</span>
-              </span>
-            </label>
-          </li>
-        ))}
-        <li>
-          <label className="relative block h-full">
-            <input type="radio" name="cardType" value="other" checked={value === 'other'} onChange={() => onChange('other')} className="peer sr-only" />
-            <span className={tile(value === 'other')}>
-              <span aria-hidden className="grid h-14 w-24 shrink-0 place-items-center rounded-lg bg-sky-50 text-2xl font-bold text-ocean-600">+</span>
-              <span className="font-medium text-navy-900">{t('apply.card.other')}</span>
-            </span>
-          </label>
-        </li>
-      </ul>
-      {error && <p id={`${uid}-error`} role="alert" className="field-error">{error}</p>}
+    <div className="space-y-4">
+      <SelectField label={`${t('apply.card')} (${t('common.optional')})`} value={value} onChange={(e) => onChange(e.target.value)} error={error}>
+        <option value="">{t('apply.card.none')}</option>
+        {cardTypes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        <option value="other">{t('apply.card.other')}</option>
+      </SelectField>
 
       {value === 'other' && (
         <TextField
@@ -63,6 +39,6 @@ export function CardPicker({ cardTypes, value, onChange, otherName, onOtherName,
           error={otherError}
         />
       )}
-    </fieldset>
+    </div>
   );
 }

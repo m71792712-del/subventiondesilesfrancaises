@@ -54,11 +54,7 @@ export function SuggestionActions({ suggestionId, banks }: { suggestionId: strin
     <form action={action} className="space-y-3">
       <input type="hidden" name="suggestionId" value={suggestionId} />
       <FormMessage state={state} />
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div>
-          <label className="label" htmlFor={`t-${suggestionId}`}>Territoire (si approuvée)</label>
-          <input id={`t-${suggestionId}`} name="territory" maxLength={80} className="input" placeholder="Ex. : Martinique" />
-        </div>
+      <div className="grid gap-3 sm:grid-cols-2">
         <div>
           <label className="label" htmlFor={`ty-${suggestionId}`}>Type (si approuvée)</label>
           <select id={`ty-${suggestionId}`} name="type" className="input" defaultValue="bank">
@@ -88,14 +84,10 @@ export function AddBankForm() {
   return (
     <form action={action} className="space-y-3">
       <FormMessage state={state} />
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-3">
         <div className="sm:col-span-2">
           <label className="label" htmlFor="bank-name">Nom</label>
           <input id="bank-name" name="name" required minLength={2} maxLength={120} className="input" />
-        </div>
-        <div>
-          <label className="label" htmlFor="bank-territory">Territoire</label>
-          <input id="bank-territory" name="territory" maxLength={80} className="input" />
         </div>
         <div>
           <label className="label" htmlFor="bank-type">Type</label>

@@ -25,8 +25,7 @@ export function ProfileCard({ profile, role, updatedAt }: { profile: ProfileInfo
       </dl>
       <h3 className="mb-1 mt-4 text-sm font-semibold text-slate-700">Saisi à l’inscription</h3>
       <dl className="divide-y divide-slate-100">
-        <Row label="Pays">{profile.demo_color || '—'}</Row>
-        <Row label="Ville">{profile.demo_city || '—'}</Row>
+        <Row label="Pays">{profile.demo_city || '—'}</Row>
         
       </dl>
       <p className="mt-3 text-xs text-slate-500">Ces champs contiennent les imformations saisi à l'inscription.</p>

@@ -38,7 +38,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     firstName: formString(formData, 'firstName'),
     phone: formString(formData, 'phone'),
     email: formString(formData, 'email'),
-    demoColor: formString(formData, 'demoColor'),
+    data: { first_name: ...
     demoCity: formString(formData, 'demoCity'),
     
   };

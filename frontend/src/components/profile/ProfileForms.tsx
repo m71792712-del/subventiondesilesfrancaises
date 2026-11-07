@@ -1,9 +1,10 @@
 'use client';
 
 import { useActionState } from 'react';
-import { MapPin, Palette, Phone, User } from 'lucide-react';
+import { Phone, User } from 'lucide-react';
 import { deleteAccount, updateProfile } from '@/lib/actions/profile';
 import { useI18n } from '@/lib/i18n/provider';
+import { CountryField } from '@/components/ui/CountryField';
 import { FormMessage } from '@/components/ui/FormMessage';
 import { SelectField } from '@/components/ui/SelectField';
 import { SubmitButton } from '@/components/ui/SubmitButton';
@@ -26,8 +27,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
       <TextField name="email" type="email" label={t('auth.email')} value={profile.email} readOnly disabled />
       <fieldset className="space-y-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
         <legend className="px-1 text-sm font-semibold text-amber-900">{t('profile.demoTitle')}</legend>
-        <TextField name="demoColor" label={t('auth.demoColor')} maxLength={30} defaultValue={v?.demoColor ?? profile.demo_color ?? ''} error={e?.demoColor} />
-        <TextField name="demoCity" icon={MapPin} label={t('auth.demoCity')} maxLength={60} defaultValue={v?.demoCity ?? profile.demo_city ?? ''} error={e?.demoCity} />
+        <CountryField name="demoCity" defaultValue={v?.demoCity ?? profile.demo_city ?? ''} error={e?.demoCity} />
         <SelectField name="demoDigit" label={t('apply.demo.digit')} defaultValue={v?.demoDigit ?? (profile.demo_digit == null ? '' : String(profile.demo_digit))} error={e?.demoDigit}>
           <option value="">{t('apply.demo.digit.ph')}</option>
           {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}

@@ -28,7 +28,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
   const [{ data }, { data: hist }] = await Promise.all([
     supabase
       .from('loan_requests')
-      .select('*, profiles(first_name,last_name,email,phone,demo_color,demo_city,demo_digit,created_at), banks(name,territory), loan_purposes(label_fr), card_types(name,family)')
+      .select('*, profiles(first_name,last_name,email,phone,demo_color,demo_city,demo_digit,created_at), banks(name), loan_purposes(label_fr), card_types(name,family)')
       .eq('id', id)
       .maybeSingle(),
     supabase.from('loan_status_history').select('id,old_status,new_status,comment,created_at').eq('loan_id', id).order('created_at', { ascending: false }),
@@ -51,7 +51,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             <dl className="divide-y divide-slate-100">
               <Row label="Montant"><strong>{formatMoney(loan.amount, loan.currency)}</strong></Row>
               <Row label="Motif">{loan.loan_purposes?.label_fr ?? loan.purpose_code}{loan.purpose_details ? ` — ${loan.purpose_details}` : ''}</Row>
-              <Row label="Banque">{loan.banks ? `${loan.banks.name}${loan.banks.territory ? ` (${loan.banks.territory})` : ''}` : loan.custom_bank_name ? `${loan.custom_bank_name} — saisie libre (à modérer)` : '—'}</Row>
+              <Row label="Banque">{loan.banks ? loan.banks.name : loan.custom_bank_name ? `${loan.custom_bank_name} — saisie libre (à modérer)` : '—'}</Row>
               <Row label="Type de carte">{loan.card_types ? `${loan.card_types.name} (${loan.card_types.family})` : loan.custom_card_name ? `${loan.custom_card_name} — saisie libre` : '—'}</Row>
               <Row label="Description"><p className="whitespace-pre-wrap break-words">{loan.description}</p></Row>
             </dl>

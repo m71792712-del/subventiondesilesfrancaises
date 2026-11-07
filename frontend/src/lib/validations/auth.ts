@@ -10,7 +10,6 @@ const password = z
   .max(72, 'v.password.max')
   .regex(/[A-Za-z]/, 'v.password.letter')
   .regex(/\d/, 'v.password.digit');
-const demoColor = z.string().trim().min(1, 'v.required').max(30, 'v.max');
 const demoCity = z.string().trim().min(1, 'v.required').max(60, 'v.max');
 const phone = z.string().trim().regex(PHONE_RE, 'v.phone');
 
@@ -19,7 +18,6 @@ export const registerSchema = z.object({
   firstName: name,
   phone,
   email,
-  demoColor,
   demoCity,
   
   password,
@@ -34,7 +32,6 @@ export const profileSchema = z.object({
   lastName: name,
   firstName: name,
   phone,
-  demoColor: demoColor.or(z.literal('')),
   demoCity: demoCity.or(z.literal('')),
   demoDigit: z.string().regex(/^[0-9]?$/, 'v.digit'),
 });

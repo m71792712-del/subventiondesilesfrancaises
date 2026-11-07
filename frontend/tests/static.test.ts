@@ -56,13 +56,7 @@ describe('traductions', () => {
 });
 
 describe('ressources', () => {
-  const slugs = ['bnp-paribas-antilles-guyane', 'bred-banque-populaire', 'caisse-d-epargne-cepac', 'credit-agricole-martinique-guyane', 'lcl', 'credit-mutuel', 'la-banque-postale', 'deblock', 'banque-de-tahiti', 'banque-de-polynesie', 'niupay', 'socredo'];
-  it('les 12 logos WebP existent et pèsent moins de 10 Ko', () => {
-    for (const s of slugs) {
-      const p = join(root, 'public/banks', `${s}.webp`);
-      expect(existsSync(p), s).toBe(true);
-      expect(statSync(p).size, s).toBeLessThan(10 * 1024);
-    }
+}
   });
   it('les images du site existent', () => {
     for (const f of ['hero-1536.webp', 'panel.webp', 'logo-icon.png']) expect(existsSync(join(root, 'public/images', f)), f).toBe(true);

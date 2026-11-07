@@ -70,14 +70,12 @@ export async function moderateSuggestionAction(_prev: ActionState, formData: For
     if (!UUID_RE.test(targetBankId)) return { error: 'Choisissez la banque existante vers laquelle fusionner.' };
   }
   const type = formString(formData, 'type') === 'fintech' ? 'fintech' : 'bank';
-  const territory = formString(formData, 'territory').slice(0, 80);
 
   const supabase = await createClient();
   const { error } = await supabase.rpc('admin_moderate_bank_suggestion', {
     p_suggestion_id: id,
     p_action: action,
     p_target_bank_id: targetBankId,
-    p_territory: action === 'approve' ? territory : '',
     p_type: action === 'approve' ? type : 'bank',
   });
   if (error) return { error: backendMessage(error.message) };
@@ -93,14 +91,13 @@ export async function moderateSuggestionAction(_prev: ActionState, formData: For
 export async function addBankAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
   const name = formString(formData, 'name').replace(/\s+/g, ' ');
-  const territory = formString(formData, 'territory').slice(0, 80);
   const type = formString(formData, 'type') === 'fintech' ? 'fintech' : 'bank';
   if (name.length < 2 || name.length > 120) return { error: 'Le nom doit contenir entre 2 et 120 caractères.' };
   const slug = slugify(name);
   if (!slug) return { error: 'Nom invalide.' };
 
   const supabase = await createClient();
-  const { error } = await supabase.from('banks').insert({ name, slug, territory, type });
+  const { error } = await supabase.from('banks').insert({ name, slug, type });
   if (error) {
     return { error: error.code === '23505' ? 'Une banque portant ce nom existe déjà.' : 'Impossible d’ajouter la banque.' };
   }

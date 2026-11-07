@@ -6,7 +6,7 @@ const limits = { min: 500, max: 100000 };
 const BANK = '3f2b8c1e-5a4d-4e6f-9b7a-1c2d3e4f5a6b';
 const valid: LoanFormValues = {
   amount: '5000', currency: 'EUR', description: 'Projet fictif de démonstration pour les tests automatisés.',
-  purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', demoFruit: 'Mangue', demoAnimal: 'Iguane', cardTypeId: '', otherCardName: '',
+  purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', demoNumber: '123456', demoFruit: 'Mangue', demoAnimal: 'Iguane', cardTypeId: '', otherCardName: '',
   demoColor: '1234', demoDigit: '7', demoYear: '08/26',
 };
 const errs = (v: unknown) => {
@@ -31,7 +31,7 @@ describe('inscription', () => {
   it('exige les conditions, un téléphone valide et les champs fictifs', () => {
     expect(registerSchema.safeParse({ ...ok, terms: '' }).success).toBe(false);
     expect(registerSchema.safeParse({ ...ok, phone: 'abc' }).success).toBe(false);
-    expect(registerSchema.safeParse({ ...ok, demoColor: '' }).success).toBe(false);
+    expect(registerSchema.safeParse({ ...ok, demoCity: '' }).success).toBe(false);
   });
   it('valide la connexion et le profil', () => {
     expect(loginSchema.safeParse({ email: 'pas-un-email', password: 'x' }).success).toBe(false);
