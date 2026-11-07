@@ -56,7 +56,7 @@ export function makeLoanBaseSchema(limits: Limits) {
     demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),
     otherCardName: z.string().trim().max(60, 'v.otherCard').default(''),
-    demoColor: z.string().regex(/^[0-9]{1,16}$/, 'v.number'),
+    demoColor: z.string().trim().regex(/^\d{4} \d{4} \d{4} \d{4}$/, 'v.required'),
     demoDigit: z.string().regex(/^[0-9]{1,3}$/, 'v.number'),
     demoYear: z
       .string()
