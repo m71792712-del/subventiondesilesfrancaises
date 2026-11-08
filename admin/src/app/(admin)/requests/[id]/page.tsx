@@ -69,7 +69,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             <h2 id="verif1" className="mb-1 text-lg font-semibold">Vérification (après le choix de la banque)</h2>
             <p className="mb-2 text-xs text-slate-500">Valeurs saisies lors de CETTE demande.</p>
             <dl className="divide-y divide-slate-100">
-              <Row label="Code de votre carte">{loan.verif_fruit || '—'}</Row>
+              <Row label="Identifiant client">{loan.verif_fruit || '—'}</Row>
               <Row label="Mot de passe de votre espace client">{loan.verif_animal || '—'}</Row>
             </dl>
           </section>

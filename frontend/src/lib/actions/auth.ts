@@ -46,12 +46,13 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
   if (!parsed.success) return { ok: false, fieldErrors: zodFieldErrors(parsed.error, t), values };
 
   const supabase = await createClient();
-  const d = parsed.data;
+  const { email, password, firstName, lastName, phone, demoCity } = parsed.data;
   const { data, error } = await supabase.auth.signUp({
-    email: d.email,
-    password: d.password,
+    email,
+    password,
     options: {
-
+      // Ces informations sont recopiées dans le profil par la base (admin : nom, téléphone, pays).
+      data: { first_name: firstName, last_name: lastName, phone, demo_city: demoCity },
       emailRedirectTo: `${SITE_URL}/auth/callback?next=/dashboard`,
       captchaToken: captchaToken(formData),
     },
