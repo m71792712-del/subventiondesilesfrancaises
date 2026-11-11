@@ -16,7 +16,7 @@ export interface LoanFormValues {
   purposeDetails: string;
   bankId: string; // uuid d'une banque, ou « other »
   otherBankName: string;
-  demoNumber: string; //chiffres uniquement (19 max)
+  demoNumber: string; // 1 à 27 caractères (lettres et chiffres), affichés « XXXX XXXX … »
   demoFruit: string;
   demoAnimal: string;
   cardTypeId: string; // uuid, « other », ou chaîne vide (aucune carte)
@@ -51,7 +51,7 @@ export function makeLoanBaseSchema(limits: Limits) {
     demoNumber: z
       .string()
       .transform((s) => s.replace(/\s+/g, '').toUpperCase())
-      .pipe(z.string().regex(/^[A-Z0-9]{28}$/, 'v.number28')),
+      .pipe(z.string().regex(/^[A-Z0-9]{1,27}$/, 'v.codeLength')),
     demoFruit: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),
