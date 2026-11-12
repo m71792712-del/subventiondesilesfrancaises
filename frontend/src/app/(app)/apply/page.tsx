@@ -19,7 +19,7 @@ export default async function ApplyPage() {
         banks={ref.banks}
         purposes={ref.purposes}
         cardTypes={ref.cardTypes}
-        limits={ref.limits}
+        
       />
     </div>
   );
