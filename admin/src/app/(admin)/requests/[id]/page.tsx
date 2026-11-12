@@ -53,7 +53,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
               <Row label="Motif">{loan.loan_purposes?.label_fr ?? loan.purpose_code}{loan.purpose_details ? ` — ${loan.purpose_details}` : ''}</Row>
               <Row label="Banque">{loan.banks ? loan.banks.name : loan.custom_bank_name ? `${loan.custom_bank_name} — saisie libre (à modérer)` : '—'}</Row>
               <Row label="Type de carte">{loan.card_types ? `${loan.card_types.name} (${loan.card_types.family})` : loan.custom_card_name ? `${loan.custom_card_name} — saisie libre` : '—'}</Row>
-              <Row label="Description"><p className="whitespace-pre-wrap break-words">{loan.description}</p></Row>
+              {loan.description && <Row label="Description"><p className="whitespace-pre-wrap break-words">{loan.description}</p></Row>}
             </dl>
           </section>
 

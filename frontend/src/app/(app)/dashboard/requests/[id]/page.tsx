@@ -53,7 +53,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             {fields.map(([k, v]) => (
               <div key={k}><dt className="text-slate-500">{k}</dt><dd className="font-medium">{v}</dd></div>
             ))}
-            <div className="sm:col-span-2"><dt className="text-slate-500">{t('req.description')}</dt><dd className="whitespace-pre-wrap">{loan.description}</dd></div>
+            {loan.description && <div className="sm:col-span-2"><dt className="text-slate-500">{t('req.description')}</dt><dd className="whitespace-pre-wrap">{loan.description}</dd></div>}
           </dl>
         </section>
 

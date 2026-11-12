@@ -27,7 +27,7 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
     p_currency: v.currency,
     p_purpose_code: v.purposeCode,
     p_purpose_details: v.purposeCode === OTHER_PURPOSE ? v.purposeDetails : null,
-    p_description: v.description,
+    p_description: null, // le formulaire n'a plus de champ « description »
     p_bank_id: isOther ? null : v.bankId,
     p_custom_bank_name: isOther ? v.otherBankName : null,
     p_card_type_id: v.cardTypeId === '' || v.cardTypeId === 'other' ? null : v.cardTypeId,

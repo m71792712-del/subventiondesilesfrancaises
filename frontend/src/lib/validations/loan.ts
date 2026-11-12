@@ -11,7 +11,7 @@ export interface Limits {
 export interface LoanFormValues {
   amount: string;
   currency: string;
-  description: string;
+  
   purposeCode: string;
   purposeDetails: string;
   bankId: string; // uuid d'une banque, ou « other »
@@ -26,13 +26,15 @@ export interface LoanFormValues {
   demoYear: string; // au format MM/AAAA
 }
 
-/** Étapes : 1 informations · 2 motif · 3 banque · 4 vérification · 5 carte · 6 vérification pédagogique · 7 récapitulatif. */
+/**
+ * Les 3 étapes du formulaire (champs contrôlés à chaque étape) :
+ *  1. informations (montant, devise) + motif + banque et vérification complémentaire (numéro, fruit, animal) ;
+ *  2. carte + vérification pédagogique (couleur, chiffre, MM/AA) ;
+ *  3. récapitulatif.
+ */
 export const LOAN_STEP_FIELDS: string[][] = [
-  ['amount', 'currency', 'description'],
-  ['purposeCode', 'purposeDetails'],
-  ['bankId', 'otherBankName', 'demoNumber', 'demoFruit', 'demoAnimal'],
-  ['cardTypeId', 'otherCardName'],
-  ['demoColor', 'demoDigit', 'demoYear'],
+  ['amount', 'currency', 'purposeCode', 'purposeDetails', 'bankId', 'otherBankName', 'demoNumber', 'demoFruit', 'demoAnimal'],
+  ['cardTypeId', 'otherCardName', 'demoColor', 'demoDigit', 'demoYear'],
   [],
 ];
 
@@ -42,7 +44,7 @@ export function makeLoanBaseSchema(limits: Limits) {
       .number({ invalid_type_error: 'v.amount.invalid' })
       .positive('v.amount.invalid'),
     currency: z.enum(CURRENCIES, { errorMap: () => ({ message: 'v.currency' }) }),
-    description: z.string().trim().min(1, 'v.required').max(2000, 'v.description'),
+    
     purposeCode: z.string().trim().min(1, 'v.purpose').max(40, 'v.purpose'),
     purposeDetails: z.string().trim().max(300, 'v.purposeDetails').default(''),
     bankId: z.string().refine((v) => v === 'other' || UUID_RE.test(v), 'v.bank'),
