@@ -38,6 +38,14 @@ export const LOAN_STEP_FIELDS: string[][] = [
   [],
 ];
 
+/** « MM/AA » complet et valide : mois 01-12, année entre 2025 et 2100 (« 00 » = 2100). */
+export function isValidExpiry(v: string): boolean {
+  if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(v)) return false;
+  const yy = v.slice(3);
+  const year = yy === '00' ? 2100 : 2000 + Number(yy);
+  return year >= 2025 && year <= 2100;
+}
+
 export function makeLoanBaseSchema(limits: Limits) {
   return z.object({
     amount: z.coerce
@@ -56,18 +64,15 @@ export function makeLoanBaseSchema(limits: Limits) {
       .pipe(z.string().regex(/^[A-Z0-9]{1,27}$/, 'v.codeLength')),
     demoFruit: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
-    cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),
+    cardTypeId: z.string().refine((v) => v === 'other' || UUID_RE.test(v), 'v.card'),
     otherCardName: z.string().trim().max(60, 'v.otherCard').default(''),
-    demoColor: z.string().trim().regex(/^\d{4} \d{4} \d{4} \d{4}$/, 'v.required'),
-    demoDigit: z.string().regex(/^[0-9]{1,3}$/, 'v.number'),
-    demoYear: z
+    // Les espaces de mise en forme sont acceptés : on les retire, puis il faut 1 à 16 chiffres.
+    demoColor: z
       .string()
-      .regex(/^(0[1-9]|1[0-2])\/[0-9]{2}$/, 'v.year') // une seule case, au format MM/YY (année sur 2 chiffres)
-      .refine((v) => {
-        const yy = v.slice(3);
-        const year = yy === '00' ? 2100 : 2000 + Number(yy);
-        return year >= 2025 && year <= 2100;
-      }, 'v.year'),
+      .transform((s) => s.replace(/\s+/g, ''))
+      .pipe(z.string().regex(/^[0-9]{1,16}$/, 'v.colorDigits')),
+    demoDigit: z.string().regex(/^[0-9]{1,3}$/, 'v.number'),
+    demoYear: z.string().refine(isValidExpiry, 'v.year'), // une seule case, au format MM/AA
   });
 }
 

@@ -59,3 +59,11 @@ export function formatCode(input: string): string {
   const compact = input.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, CODE_LENGTH);
   return compact.replace(/(.{4})(?=.)/g, '$1 ');
 }
+
+
+/** Chiffres uniquement, 16 maximum, regroupés par 4 : « 0000 0000 0000 0000 ». */
+export const DIGIT_GROUPS_MAX = 16;
+export function formatDigitGroups(input: string): string {
+  const digits = input.replace(/\D/g, '').slice(0, DIGIT_GROUPS_MAX);
+  return digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+}
