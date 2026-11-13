@@ -10,7 +10,7 @@ import { useI18n } from '@/lib/i18n/provider';
 import { purposeLabel } from '@/lib/i18n/shared';
 import { progressAt } from '@/lib/simulation/progress';
 import { formatCode, formatDigitGroups, formatMoney } from '@/lib/utils';
-import { LOAN_STEP_FIELDS, isValidExpiry, validateLoanStep, type LoanFormValues } from '@/lib/validations/loan';
+import { LOAN_STEP_FIELDS, isValidExpiry, validateLoanStep, type Limits, type LoanFormValues } from '@/lib/validations/loan';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import { SelectField } from '@/components/ui/SelectField';
 import { TextField } from '@/components/ui/TextField';
@@ -22,12 +22,14 @@ interface Props {
   banks: Bank[];
   purposes: Purpose[];
   cardTypes: CardType[];
+  limits?: Limits; // facultatif : il n'y a plus de limite de montant
 }
 
 const STEPS = 3; // 1 informations + motif + banque · 2 carte + vérification · 3 récapitulatif
 const VERIFY_MS = 8000;
+const NO_LIMITS: Limits = { min: 0, max: Number.MAX_SAFE_INTEGER }; // aucune limite de montant
 
-export function LoanWizard({ banks, purposes, cardTypes }: Props) {
+export function LoanWizard({ banks, purposes, cardTypes, limits = NO_LIMITS }: Props) {
   const { t, locale } = useI18n();
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', purposeCode: '', purposeDetails: '',
@@ -61,7 +63,7 @@ export function LoanWizard({ banks, purposes, cardTypes }: Props) {
   const translate = (keys: Record<string, string>) => Object.fromEntries(Object.entries(keys).map(([k, v]) => [k, t(v)]));
 
   const goNext = () => {
-    const found = validateLoanStep(step, values);
+    const found = validateLoanStep(step, values, limits);
     if (Object.keys(found).length) return setErrors(translate(found));
     setErrors({});
     if (step === 1) setVerifiedFor(values.demoYear);
@@ -70,7 +72,7 @@ export function LoanWizard({ banks, purposes, cardTypes }: Props) {
 
   const submit = () => {
     for (let i = 0; i < STEPS - 1; i++) {
-      const found = validateLoanStep(i, values);
+      const found = validateLoanStep(i, values, limits);
       if (Object.keys(found).length) {
         setStep(i);
         return setErrors(translate(found));
@@ -202,7 +204,7 @@ export function LoanWizard({ banks, purposes, cardTypes }: Props) {
             </Section>
 
             <Section title={t('apply.sec.verif')}>
-              <VerificationStep values={values} errors={errors} update={update} verifiedFor={verifiedFor} onComplete={goNext} />
+              <VerificationStep values={values} errors={errors} update={update} verifiedFor={verifiedFor} limits={limits} onComplete={goNext} />
             </Section>
           </>
         )}
@@ -277,18 +279,19 @@ function Section({ title, first, children }: { title: string; first?: boolean; c
  *   invalide, ses erreurs s'affichent et le passage se fait dès qu'elles sont corrigées.
  * - En revenant depuis le récapitulatif, la date déjà vérifiée ne relance pas la barre.
  */
-function VerificationStep({ values, errors, update, verifiedFor, onComplete }: {
+function VerificationStep({ values, errors, update, verifiedFor, limits, onComplete }: {
   values: LoanFormValues;
   errors: Record<string, string>;
   update: (p: Partial<LoanFormValues>) => void;
   verifiedFor: string;
+  limits: Limits;
   onComplete: () => void;
 }) {
   const { t } = useI18n();
   const dateOk = isValidExpiry(values.demoYear);
   const verified = dateOk && verifiedFor === values.demoYear;
   const [progress, setProgress] = useState(verified ? 100 : 0);
-  const stepValid = Object.keys(validateLoanStep(1, values)).length === 0;
+  const stepValid = Object.keys(validateLoanStep(1, values, limits)).length === 0;
 
   const onCompleteRef = useRef(onComplete);
   const doneRef = useRef(verified); // vrai quand la barre est arrivée à 100 % pour la date saisie
