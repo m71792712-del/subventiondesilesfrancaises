@@ -53,7 +53,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     options: {
       // Ces informations sont recopiées dans le profil par la base (admin : nom, téléphone, pays).
       data: { first_name: firstName, last_name: lastName, phone, demo_city: demoCity },
-      emailRedirectTo: `${SITE_URL}/auth/callback?next=/dashboard`,
+      emailRedirectTo: `${SITE_URL}/auth/callback?next=/apply`,
       captchaToken: captchaToken(formData),
     },
   });

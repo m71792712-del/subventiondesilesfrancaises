@@ -162,7 +162,7 @@ export const fr: Dictionary = {
   'apply.title': 'Demande de subvention',
   'apply.stepOf': 'Étape {current}/{total}',
   'apply.s1': 'Informations',
-  'apply.s2': 'Banque, carte et vérification',
+  'apply.s2': 'Carte et vérification',
   'apply.s3': 'Récapitulatif',
 
   'apply.t1': 'Informations, motif et banque',
