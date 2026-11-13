@@ -324,10 +324,7 @@ function VerificationStep({ values, errors, update, verifiedFor, limits, onCompl
 
   return (
     <>
-      <div role="note" className="flex gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-        <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
-        <p>{t('apply.demo.warning')}</p>
-      </div>
+      
       <TextField
         label={t('apply.demo.color')}
         icon={CreditCard}

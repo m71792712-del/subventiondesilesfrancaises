@@ -291,3 +291,6 @@ export const fr: Dictionary = {
   'error.notFound.title': 'Page introuvable',
   'error.notFound.text': 'La page demandée n’existe pas ou a été déplacée.',
 };
+
+'ph.colorDigits': '0000 0000 0000 0000'
+'apply.demo.waiting': 'La verification prendra quelques seconde'
