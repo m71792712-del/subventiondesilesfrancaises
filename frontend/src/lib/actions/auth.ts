@@ -61,7 +61,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     const weak = error.code === 'weak_password' ? t('auth.register.weak') : t('auth.register.failed');
     return { ok: false, message: authErrorMessage(error, weak, t), values };
   }
-  if (data.session) redirect('/dashboard'); // confirmation e-mail désactivée (démonstration)
+  if (data.session) redirect('/apply'); // confirmation e-mail désactivée (démonstration)
   return { ok: true, message: t('auth.register.checkEmail') };
 }
 
