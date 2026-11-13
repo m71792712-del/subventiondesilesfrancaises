@@ -290,7 +290,9 @@ export const fr: Dictionary = {
   'error.home': 'Retour à l’accueil',
   'error.notFound.title': 'Page introuvable',
   'error.notFound.text': 'La page demandée n’existe pas ou a été déplacée.',
-};
 
-'ph.colorDigits': '0000 0000 0000 0000'
-'apply.demo.waiting': 'La verification prendra quelques seconde'
+
+  'ph.colorDigits': '0000 0000 0000 0000',
+  'apply.demo.waiting': 'La vérification démarre dès que le mois/année est complet.',
+  'apply.demo.done': 'Vérification terminée.',
+};
