@@ -21,15 +21,15 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
   if (!parsed.success) return { ok: false, message: t('v.invalid'), fieldErrors: zodFieldErrors(parsed.error, t) };
   const v = parsed.data;
 
-  const isOther = v.bankId === 'other';
+
   const { data, error } = await ctx.supabase.rpc('create_loan_request', {
     p_amount: v.amount,
     p_currency: v.currency,
     p_purpose_code: v.purposeCode,
     p_purpose_details: v.purposeCode === OTHER_PURPOSE ? v.purposeDetails : null,
     p_description: null, // le formulaire n'a plus de champ « description »
-    p_bank_id: isOther ? null : v.bankId,
-    p_custom_bank_name: isOther ? v.otherBankName : null,
+    p_bank_id: v.bankId,
+    p_custom_bank_name: null,
     p_card_type_id: v.cardTypeId === '' || v.cardTypeId === 'other' ? null : v.cardTypeId,
     p_custom_card_name: v.cardTypeId === 'other' ? v.otherCardName : null,
     // Vérification pédagogique : enregistrée avec CETTE demande (le profil de l'inscription n'est plus modifié).

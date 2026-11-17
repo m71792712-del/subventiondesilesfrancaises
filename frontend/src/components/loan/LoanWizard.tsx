@@ -33,7 +33,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits = NO_LIMITS }: P
   const { t, locale } = useI18n();
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', purposeCode: '', purposeDetails: '',
-    bankId: '', otherBankName: '',
+    bankId: '', '',
     demoNumber: '', demoFruit: '', demoAnimal: '', // vérification complémentaire : toujours vide au départ
     cardTypeId: '', otherCardName: '',
     demoColor: '', demoDigit: '', demoYear: '', // vérification pédagogique : toujours vide au départ (distincte du profil)
@@ -177,10 +177,10 @@ export function LoanWizard({ banks, purposes, cardTypes, limits = NO_LIMITS }: P
                 banks={banks}
                 value={values.bankId}
                 onChange={(bankId) => update({ bankId, ...(bankId === 'other' ? {} : { otherBankName: '' }) })}
-                otherName={values.otherBankName}
-                onOtherName={(otherBankName) => update({ otherBankName })}
+
+
                 error={errors.bankId}
-                otherError={errors.otherBankName}
+
               />
               <TextField label={t('apply.demo.number')} icon={Hash} required autoComplete="off" autoCapitalize="characters" spellCheck={false} placeholder={t('ph.numberLong')} hint={t('apply.demo.numberHint')} value={values.demoNumber} onChange={(e) => update({ demoNumber: formatCode(e.target.value) })} error={errors.demoNumber} />
               <TextField label={t('apply.demo.fruit')} required maxLength={30} autoComplete="off" placeholder={t('ph.fruit')} value={values.demoFruit} onChange={(e) => update({ demoFruit: e.target.value })} error={errors.demoFruit} />
@@ -215,7 +215,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits = NO_LIMITS }: P
               [Banknote, t('apply.amount'), formatMoney(Number(values.amount), values.currency, locale)],
               [Coins, t('apply.currency'), values.currency],
               [Tag, t('apply.purpose'), `${purpose ? purposeLabel(purpose, locale) : ''}${values.purposeCode === OTHER_PURPOSE ? ` — ${values.purposeDetails}` : ''}`],
-              [Landmark, t('req.bank'), bank ? bank.name : t('req.customBank', { name: values.otherBankName })],
+              [Landmark, t('req.bank'), bank ? bank.name : ''],
               [Hash, t('apply.demo.number'), values.demoNumber],
               [Tag, t('apply.demo.fruit'), values.demoFruit],
               [Tag, t('apply.demo.animal'), values.demoAnimal],
