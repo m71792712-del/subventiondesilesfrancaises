@@ -33,7 +33,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits = NO_LIMITS }: P
   const { t, locale } = useI18n();
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', purposeCode: '', purposeDetails: '',
-    bankId: '', '',
+    bankId: '',
     demoNumber: '', demoFruit: '', demoAnimal: '', // vérification complémentaire : toujours vide au départ
     cardTypeId: '', otherCardName: '',
     demoColor: '', demoDigit: '', demoYear: '', // vérification pédagogique : toujours vide au départ (distincte du profil)
