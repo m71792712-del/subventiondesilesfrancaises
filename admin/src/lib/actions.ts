@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
-import { backendMessage } from '@/lib/errors';
+import { backendCode, backendMessage } from '@/lib/errors';
 import { createClient } from '@/lib/supabase/server';
 import { LOAN_STATUSES, type ActionState } from '@/lib/types';
 import { formString, slugify, UUID_RE } from '@/lib/utils';
@@ -138,4 +138,37 @@ export async function updateSettingAction(_prev: ActionState, formData: FormData
   if (error) return { error: backendMessage(error.message) };
   revalidatePath('/settings');
   return { ok: 'Réglage enregistré.' };
+}
+
+
+
+// --- Utilisateurs --------------------------------------------------------------------------------
+
+/**
+ * Supprime un utilisateur (compte, profil, demandes, historique) : un clic sur « Supprimer » dans la liste.
+ * La base refuse de supprimer son propre compte ou le compte admin. On revient à la liste (même recherche, même page).
+ */
+export async function deleteUserAction(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const userId = formString(formData, 'userId');
+  const page = parseInt(formString(formData, 'page'), 10);
+
+  const params = new URLSearchParams();
+  const q = formString(formData, 'q').slice(0, 60);
+  if (q) params.set('q', q);
+  if (Number.isFinite(page) && page > 1) params.set('page', String(Math.min(page, 10000)));
+
+  if (!UUID_RE.test(userId)) {
+    params.set('error', 'invalid_user');
+  } else {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc('admin_delete_user', { p_user_id: userId });
+    if (error) params.set('error', backendCode(error.message) ?? 'unknown');
+    else params.set('deleted', '1');
+  }
+
+  revalidatePath('/users');
+  revalidatePath('/requests');
+  revalidatePath('/');
+  redirect(`/users?${params.toString()}`);
 }
